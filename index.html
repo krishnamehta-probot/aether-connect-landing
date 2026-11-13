@@ -2198,12 +2198,16 @@ if(document.body)put();else document.addEventListener('DOMContentLoaded',put);})
   function pages() {
     var list = Array.prototype.slice.call(document.querySelectorAll("[data-ac-page]"));
     if (list.length < 2) return;
-    var cur = null;
+    var cur = null, snap = null;
+    /* v09: the leaving page's scroll is taken at popstate, before the browser's own jump for the new hash,
+       so Back lands exactly where you left (it used to lean on the browser's late scroll restore) */
+    window.addEventListener("popstate", function () { snap = window.scrollY; });
     function show(first) {
       var id = window.location.hash.slice(1);
       var page = list.filter(function (p) { return p.getAttribute("data-ac-page") === id; })[0] || list[0];
-      if (page === cur) return;
-      if (cur) cur.__acY = window.scrollY;
+      if (page === cur) { snap = null; return; }
+      if (cur) cur.__acY = snap !== null ? snap : window.scrollY;
+      snap = null;
       list.forEach(function (p) {
         p.hidden = p !== page;
         if (p.hidden) Array.prototype.forEach.call(p.querySelectorAll("video"), function (v) { v.pause(); });   /* v09: no sound from a hidden page */
@@ -2213,7 +2217,10 @@ if(document.body)put();else document.addEventListener('DOMContentLoaded',put);})
       /* a hash that names something on the new page (#top) goes there; otherwise back to where you were */
       var target = id && document.getElementById(id);
       if (target && page.contains(target)) target.scrollIntoView();
-      else if (!first) window.scrollTo(0, page.__acY || 0);
+      else if (!first) {   /* v09: land at once (base.css scrolls smoothly, which made Back glide down from the top) */
+        var h = document.documentElement, was = h.style.scrollBehavior;
+        h.style.scrollBehavior = "auto"; window.scrollTo(0, page.__acY || 0); h.style.scrollBehavior = was;
+      }
       window.dispatchEvent(new Event("scroll"));
     }
     window.addEventListener("hashchange", function () { show(false); });
