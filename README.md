@@ -7,13 +7,13 @@ Live, two versions for review:
 
 Each file holds its landing page and its Thank You page (`#thank-you`), with fonts, images and scripts inlined. A successful form submit switches to the Thank You page. `vercel.json` turns on clean URLs, so `/v2` serves `v2.html`.
 
-`video/` holds the two ad videos played in section 2 (720p web versions of our finals), shared by both versions. They load only when someone taps play.
+`video/` holds the 10-second demo video played in section 2, shared by both versions. It loads only once section 2 comes on screen.
 
 ## Updating
 
 `index.html` and `v2.html` are build outputs, so don't edit them by hand. The source is in the UMM Aether Connect project folder:
 
-- `07_website/landing-ads_v05.html`, `landing-ads_v06.html` and `thank-you_v03.html` (built on `design-system_v10/` and `v09/`)
+- `07_website/landing-ads_v05.html`, `landing-ads_v06.html` and `thank-you_v03.html` (built on `design-system_v10/`)
 - rebuild each into an empty folder: `python 07_website/_tools/build_share.py landing-ads_vNN.html <folder>/index.html --with thank-you_v03.html`
 - copy v05's `index.html` here as `index.html`, and v06's as `v2.html`. Commit, push, then deploy:
   `npx vercel@latest deploy --prod --yes --global-config %USERPROFILE%\.vercel-umm --scope krishna-probot`
