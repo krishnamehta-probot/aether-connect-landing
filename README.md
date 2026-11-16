@@ -3,7 +3,7 @@
 Live, two versions for review:
 
 - **Version 1:** https://aether-connect-landing.vercel.app (`index.html`, built from landing v05). The hero has an A/B switch in the top bar (`?hero=a` or `?hero=b`).
-- **Version 2:** https://aether-connect-landing.vercel.app/v2 (`v2.html`, built from landing v06). This is the glass hero with the step-by-step form.
+- **Version 2:** https://aether-connect-landing.vercel.app/v2 (`v2.html`, built from landing v06). A night-stage hero (headline, a student with her passport and boarding pass, the three newcomer figures), then the eligibility check as a boarding pass.
 
 Each file holds its landing page and its Thank You page (`#thank-you`), with fonts, images and scripts inlined. A successful form submit switches to the Thank You page. `vercel.json` turns on clean URLs, so `/v2` serves `v2.html`.
 
