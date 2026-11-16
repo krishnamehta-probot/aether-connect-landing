@@ -2922,6 +2922,15 @@ img[data-ac-fade] { transition: opacity 1000ms var(--ease-out); }
 .gx-glass::before { content: ""; position: absolute; z-index: 2; left: 24px; right: 24px; top: 0; height: 1px; pointer-events: none;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55) 30%, rgba(255, 255, 255, .55) 70%, transparent); }   /* still, like the hero panel's edge */
 
+/* the page's rhythm (16 Nov, the user: "too much space between 2 sections"). One section step for the whole page
+   instead of the system's 176 px: 120 px at most. A white section that follows another white section only adds 60%
+   of it on top, so two whites meet at ~1.6 steps (~145 px at 1440), not two full ones; the dark stages keep a
+   little more inside, for the beam. The film now has its own foot, so the next stage never touches the video */
+.gx-site { --section-y: clamp(60px, 2.2rem + 3.6vw, 120px); }
+.gx-site .gxs.ac-section { padding-block: calc(var(--section-y) * 1.1); }
+.gx-site #plan, .gx-site #branch, .gx-site #faq { padding-top: calc(var(--section-y) * .6); }   /* white after white (#how between journeys and branch is hidden) */
+.gx-site #plan { padding-bottom: var(--section-y); }
+
 /* the check (16 Nov: out of the hero, right below it; round 2: just the form, as a boarding pass, see the hero CSS) */
 .gx-check { background: #fff; }
 
@@ -2954,6 +2963,7 @@ img[data-ac-fade] { transition: opacity 1000ms var(--ease-out); }
 .gx-site .ac-howtabs__n { display: none; }
 .gx-site .ac-howtabs__bar { left: 24px; right: 24px; bottom: 7px; height: 2px; border-radius: 2px; }
 .gx-site .ac-howtabs__panel { gap: 8px; }
+@media (min-width: 861px) { .gx-site .ac-howtabs__panel { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }   /* 2 + 2 (the user, 16 Nov): with the story and the photo at exactly half each, the seam between tabs 2 and 3 lands on the seam between them (the track's 6 px padding and gaps add up to the panel's 8 px gap). Phones keep the system's stack */
 .gx-site .ac-howtabs__body { border-radius: 17px; background: rgba(255, 255, 255, .04); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .07); }
 .gx-site .ac-howtabs__title { font-weight: 400; letter-spacing: -0.035em; }
 .gx-site .ac-howtabs__text { color: rgba(226, 228, 252, .72); }
