@@ -2544,8 +2544,10 @@ img[data-ac-fade] { transition: opacity 1000ms var(--ease-out); }
   --cta: linear-gradient(62deg, #EB4436 0%, #F2723A 55%, #F59A3F 100%); --cta-fg: #fff; --cta-arrow: #EB4436;
   --night-a: #2C2F70; --night-b: #121436; --night-c: #07081E; --screen-a: #16184E; --screen-b: #0A0B26; --night-rgb: 14 16 48;
   --on-night: 226 228 252;
+  --board: linear-gradient(180deg, #0F1036 0%, #07081E 100%); --fl-a: #262966; --fl-b: #17194A; --fl-em-a: #F2723A; --fl-em-b: #D8462B; --board-leaf: #EB4436;
 }
 [data-theme="bmo"] {
+  --board: linear-gradient(180deg, #0B1C37 0%, #040D1C 100%); --fl-a: #1E3152; --fl-b: #12203A; --fl-em-a: #F2353C; --fl-em-b: #C9121C; --board-leaf: #ED1C24;
   --rib-front: #DDEDF9; --rib-red-a: #B3091B; --rib-red-b: #D80F1A; --rib-red-c: #ED1C24;
   --bento-hero: linear-gradient(155deg, #1C9AD9 0%, #0079C1 38%, #005DAA 72%, #0B3F7A 100%);
   --hero-bg: radial-gradient(60% 70% at 0% 0%, rgba(0, 121, 193, .5), transparent 65%), radial-gradient(50% 55% at 100% 100%, rgba(237, 28, 36, .14), transparent 70%), linear-gradient(160deg, #0B2C55 0%, #051831 100%);
@@ -3581,6 +3583,96 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
   .gx-person__float { animation: none !important; }
   .gx-fbub img { animation: none !important; }
 }
+
+/* ==========================================================================
+   THE ARRIVALS BOARD (client round 3, 23 Nov): the headline on split-flap tiles, as at the moment you land.
+   The script sets --tw/--th (tile size) and --g (gap) from the space there is; each tile is four halves
+   (top + bottom standing, top + bottom flipping) and the glyph inside each half is the whole tile's height.
+   ========================================================================== */
+.gx.has-board .gx-title { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.gx-board { --g: 5px; --tw: 34px; --th: 48px; position: relative; margin-top: clamp(14px, 2.2vh, 22px); padding: clamp(10px, 1.5vh, 16px) clamp(10px, 1.2vw, 16px);
+  border-radius: 18px; background: var(--board); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .07), inset 0 1px 0 rgba(255, 255, 255, .1), 0 44px 80px -44px rgba(0, 0, 0, .85); }
+.gx-board__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 2px clamp(8px, 1.2vh, 12px);
+  font: 600 11px/1 var(--f-label); letter-spacing: .16em; text-transform: uppercase; color: rgba(255, 255, 255, .6); }
+.gx-board__name { display: inline-flex; align-items: center; gap: 9px; color: #fff; }
+.gx-board__name span { padding-left: 10px; border-left: 1px solid rgba(255, 255, 255, .2); color: rgba(255, 255, 255, .55); font-weight: 500; }
+.gx-board__leaf { width: 15px; height: 15px; fill: var(--board-leaf); }
+.gx-board__clock { display: inline-flex; align-items: baseline; gap: 8px; }
+.gx-board__clock b { font: 500 13px/1 var(--f-num); letter-spacing: .02em; color: #fff; }
+.gx-board__rows { display: grid; gap: var(--g); min-height: calc(var(--th) * 2); }
+.gx-board__row { display: flex; gap: var(--g); }
+.fl { position: relative; flex: none; width: var(--tw); height: var(--th); perspective: calc(var(--th) * 5); }
+.fl > i { position: absolute; left: 0; right: 0; height: calc(50% - .5px); overflow: hidden; background: linear-gradient(180deg, var(--fl-a), var(--fl-b)); }
+.fl > i:nth-child(odd) { top: 0; border-radius: calc(var(--tw) * .14) calc(var(--tw) * .14) 1px 1px; transform-origin: 50% calc(100% + .5px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07); }
+.fl > i:nth-child(even) { bottom: 0; border-radius: 1px 1px calc(var(--tw) * .14) calc(var(--tw) * .14); transform-origin: 50% -.5px; background: linear-gradient(180deg, var(--fl-b), var(--fl-a)); box-shadow: 0 2px 3px -1px rgba(0, 0, 0, .55); }
+.fl > i:nth-child(4) { transform: rotateX(90deg); }
+.fl > i:nth-child(n+3) { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.fl b { position: absolute; left: 0; right: 0; top: 0; height: var(--th); padding-top: calc(var(--th) * .035); display: grid; place-items: center;
+  font: 600 calc(var(--th) * .64)/1 var(--f-sans); letter-spacing: 0; color: #F3F6FB; text-shadow: 0 1px 0 rgba(0, 0, 0, .35); }
+.fl > i:nth-child(even) b { top: auto; bottom: 0; }
+.fl--em > i { background: linear-gradient(180deg, var(--fl-em-a), var(--fl-em-b)); }
+.fl--em > i:nth-child(even) { background: linear-gradient(180deg, var(--fl-em-b), var(--fl-em-a)); }
+.fl--em b { color: #fff; }
+.gx-board__strip { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: clamp(10px, 1.4vh, 14px); padding-top: clamp(10px, 1.4vh, 14px);
+  border-top: 1px dashed rgba(255, 255, 255, .14); }
+.gx-board__k { display: inline-flex; align-items: center; gap: 8px; font: 600 10.5px/1 var(--f-label); letter-spacing: .16em; text-transform: uppercase; color: rgba(255, 255, 255, .55); }
+.gx-board__grp { display: inline-flex; align-items: center; gap: 10px; }
+.gx-board__grp--acct { margin-left: auto; }
+.gx.has-board .gx-think__her { scale: -1 1; }   /* mirrored, so she looks up at the board */
+.gx-board__flag { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .85); }
+.gx-board__mini { --tw: 15px; --th: 21px; display: flex; gap: 2px; }
+@media (max-width: 600px) {
+  .gx-board { border-radius: 14px; }
+  .gx-board__top { font-size: 10px; letter-spacing: .12em; }
+  .gx-board__k { font-size: 9.5px; letter-spacing: .12em; }
+  .gx-board__mini { --tw: 13px; --th: 19px; }
+  .gx-board__grp--acct { margin-left: 0; }
+}
+
+/* ==========================================================================
+   CLIENT ROUND 3 (23 Nov 2026): the parts the client doesn't want for now. HIDDEN, NOT DELETED: all the markup is
+   still on the page, so deleting a rule here brings its part back (and its layout fix below it can go too).
+   ========================================================================== */
+#trust { display: none !important; }                                       /* 2 · "Your money, your account", the whole section */
+@media (max-width: 980px) { .gx-prow .gx-ctarow { display: none !important; } } /* 4 · the rows' CTA, wherever the sticky button shows */
+.gx-how .gx-kicker, .gx-how .gx-step__d, .gx-how__foot { display: none !important; } /* 5 · each step is its number and title */
+.gx-jhead .ac-lead, .gx-jhead .gx-ctarow { display: none !important; }     /* 6 · the journeys' line and CTA */
+.gx-branch .gx-split .ac-lead, .gx-branch__photo, .gx-branch .ac-steprow__list, .gx-branch__foot { display: none !important; } /* 7 · only the checklist stays */
+.gx-faq .gx-head .ac-h2, .gx-faq .gx-head .ac-lead, .gx-contact { display: none !important; } /* 8 · the FAQ keeps its label and the questions */
+.gx-end, .ac-legalfoot { display: none !important; }                       /* 9 · the closing band and the footer's logo + text (the Privacy and Terms line stays, the user, 23 Nov) */
+
+/* step 1 of the check holds three fields now: the country box gets the most room, so "Select your country" fits */
+@media (min-width: 861px) { .gx-cstep[data-cstep="1"] .gx-check__fields--3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr); } }
+.gx-cstep[data-cstep="1"] .gx-select select { padding-right: 40px; }
+/* how it works: the head and the four steps share the left column, the phone stands beside them */
+.gx-step__t { margin-top: 22px; }
+@media (min-width: 961px) {
+  .gx-how > .ac-container { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); column-gap: clamp(40px, 2rem + 4vw, 112px); align-items: center; }
+  .gx-how__grid { display: contents; }
+  .gx-how .gx-head { grid-column: 1; grid-row: 1; align-self: end; }
+  .gx-how__grid > :first-child { grid-column: 1; grid-row: 2; align-self: start; margin-top: clamp(32px, 1.5rem + 1.5vw, 48px); }
+  .gx-how .gx-phone { grid-column: 2; grid-row: 1 / span 2; }
+}
+@media (min-width: 961px) and (max-width: 1180px) { .gx-how > .ac-container { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); column-gap: 40px; } }
+/* laptops and up: no cards, the four steps are a numbered list (the user: "not liking the big cards"); hover keeps the 28° wash.
+   Phones keep their swipe cards. */
+@media (min-width: 961px) {
+  .gx-how .gx-steps { grid-template-columns: minmax(0, 1fr) !important; gap: 0; border-top: 1px solid rgb(var(--ink-rgb) / .12); }
+  .gx-how .gx-step { flex-direction: row; align-items: center; gap: clamp(18px, 1.8vw, 30px); padding: clamp(18px, 2.6vh, 28px) 14px; border-radius: 0;
+    background: none; box-shadow: none; border-bottom: 1px solid rgb(var(--ink-rgb) / .12); }
+  .gx-how .gx-step::after { display: none; }
+  .gx-how .gx-step:hover { translate: none; box-shadow: none; }
+  .gx-how .gx-step .gx-num { width: 46px; height: 46px; font: 500 14px/1 var(--f-num); }
+  .gx-how .gx-step__t { margin: 0; font-size: clamp(1.4rem, .9rem + 1.05vw, 2rem); letter-spacing: -0.035em; transition: color .7s var(--gx-ease); }
+  .gx-how .gx-step:hover .gx-step__t { color: var(--acc-ink); }
+}
+.gx-branch > .ac-container { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px clamp(40px, 2rem + 4vw, 112px); align-items: center; }
+.gx-branch .gx-split { display: block; }
+.gx-branch__grid { display: block; margin-top: 0; }
+.gx-faq__grid { grid-template-columns: minmax(0, 1fr); gap: 28px; max-width: 920px; }
+.gx-faq__aside { position: static; text-align: center; }
+@media (max-width: 960px) { .gx-branch > .ac-container { grid-template-columns: minmax(0, 1fr); } }
+@media (min-width: 961px) { .gx-jstage { min-height: clamp(500px, 38vw, 580px); } }
 </style>
 <!-- hero gate (v4): the intro plays on every load, from the top; none of it with reduced motion; removed if the script never runs -->
 <script>(function(h){if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;h.classList.add("gx-anim");h.classList.add("gx-intro-on");if("scrollRestoration" in history)history.scrollRestoration="manual";setTimeout(function(){if(!window.GX_OK)h.classList.remove("gx-anim","gx-intro-on")},5000)})(document.documentElement)</script>
@@ -3620,6 +3712,18 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
       <div class="gx-hero__head">
         <span class="ac-label" data-gx-in style="--d:150">For Students, Workers and New Permanent Residents</span>
         <h1 class="gx-title" id="hero-title"><span class="gx-l">Your expenses in Canada</span> <span class="gx-l gx-l--em">starts the moment you land.</span></h1>
+        
+        <div class="gx-board" data-gx-board aria-hidden="true" data-gx-in style="--d:250">
+          <div class="gx-board__top">
+            <span class="gx-board__name"><svg class="gx-board__leaf" viewBox="2900 360 3800 4110"><path d="M4890 4430l-45-863a95 95 0 0 1 111-98l859 151-116-320a65 65 0 0 1 20-73l941-762-212-99a65 65 0 0 1-34-79l186-572-542 115a65 65 0 0 1-73-38l-105-247-423 454a65 65 0 0 1-111-57l204-1052-327 189a65 65 0 0 1-91-27l-332-652-332 652a65 65 0 0 1-91 27l-327-189 204 1052a65 65 0 0 1-111 57l-423-454-105 247a65 65 0 0 1-73 38l-542-115 186 572a65 65 0 0 1-34 79l-212 99 941 762a65 65 0 0 1 20 73l-116 320 859-151a95 95 0 0 1 111 98l-45 863z"/></svg>Arrivals<span>Canada</span></span>
+            <span class="gx-board__clock">Toronto <b data-gx-clock>--:--</b></span>
+          </div>
+          <div class="gx-board__rows" data-gx-board-rows></div>
+          <div class="gx-board__strip">
+            <span class="gx-board__grp"><span class="gx-board__k"><img class="gx-board__flag" data-gx-board-flag data-flag="in" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0iZmxhZy1pY29ucy1pbiIgdmlld0JveD0iMCAwIDUxMiA1MTIiPgogIDxwYXRoIGZpbGw9IiNmOTMiIGQ9Ik0wIDBoNTEydjE3MC43SDB6Ii8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTAgMTcwLjdoNTEydjE3MC42SDB6Ii8+CiAgPHBhdGggZmlsbD0iIzEyODgwNyIgZD0iTTAgMzQxLjNoNTEyVjUxMkgweiIvPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1NiAyNTYpc2NhbGUoMy40MTMzMykiPgogICAgPGNpcmNsZSByPSIyMCIgZmlsbD0iIzAwOCIvPgogICAgPGNpcmNsZSByPSIxNy41IiBmaWxsPSIjZmZmIi8+CiAgICA8Y2lyY2xlIHI9IjMuNSIgZmlsbD0iIzAwOCIvPgogICAgPGcgaWQ9ImluLWQiPgogICAgICA8ZyBpZD0iaW4tYyI+CiAgICAgICAgPGcgaWQ9ImluLWIiPgogICAgICAgICAgPGcgaWQ9ImluLWEiIGZpbGw9IiMwMDgiPgogICAgICAgICAgICA8Y2lyY2xlIHI9Ii45IiB0cmFuc2Zvcm09InJvdGF0ZSg3LjUgLTguOCAxMzMuNSkiLz4KICAgICAgICAgICAgPHBhdGggZD0iTTAgMTcuNS42IDcgMCAybC0uNiA1eiIvPgogICAgICAgICAgPC9nPgogICAgICAgICAgPHVzZSB4bGluazpocmVmPSIjaW4tYSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdHJhbnNmb3JtPSJyb3RhdGUoMTUpIi8+CiAgICAgICAgPC9nPgogICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI2luLWIiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHRyYW5zZm9ybT0icm90YXRlKDMwKSIvPgogICAgICA8L2c+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iI2luLWMiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPC9nPgogICAgPHVzZSB4bGluazpocmVmPSIjaW4tZCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdHJhbnNmb3JtPSJyb3RhdGUoMTIwKSIvPgogICAgPHVzZSB4bGluazpocmVmPSIjaW4tZCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdHJhbnNmb3JtPSJyb3RhdGUoLTEyMCkiLz4KICA8L2c+Cjwvc3ZnPgo=" alt="" width="22" height="22">From</span><span class="gx-board__mini" data-gx-board-from></span></span>
+            <span class="gx-board__grp gx-board__grp--acct"><span class="gx-board__k">Bank account</span><span class="gx-board__mini" data-gx-board-acct></span></span>
+          </div>
+        </div>
         <p class="gx-lead" data-gx-in style="--d:760">Open and fund your BMO account through Aether Connect before you fly, and settle in faster.</p>
       </div>
 
@@ -3631,7 +3735,17 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
             
             <div class="gx-cstep" data-cstep="1">
               <p class="gx-urge"><i aria-hidden="true"></i>Check your eligibility for a BMO Student GIC or chequing account today.</p>
-              <div class="gx-check__fields">
+              <div class="gx-check__fields gx-check__fields--3">
+                <div class="gx-field">
+                  <label class="gx-label" for="ck-name">Name as on passport</label>
+                  <input class="gx-input" id="ck-name" name="name" type="text" autocomplete="name" placeholder="Your full name" required data-required="Please enter your full name." aria-describedby="ck-name-err">
+                  <p class="gx-err" id="ck-name-err" aria-live="polite"></p>
+                </div>
+                <div class="gx-field">
+                  <label class="gx-label" for="ck-phone">Phone or WhatsApp</label>
+                  <input class="gx-input" id="ck-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91 98765 43210" required data-required="Please enter a phone number." aria-describedby="ck-phone-err">
+                  <p class="gx-err" id="ck-phone-err" aria-live="polite"></p>
+                </div>
                 <div class="gx-field">
                   <label class="gx-label" for="ck-country">Where do you live now?</label>
                   <div class="gx-select">
@@ -3658,6 +3772,15 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
                   </div>
                   <p class="gx-err" id="ck-country-err" aria-live="polite"></p>
                 </div>
+              </div>
+              <div class="gx-check__go">
+                <button class="gx-btn" type="button" data-gx-next><span class="ac-btn__label">Check my eligibility</span><span class="ac-btn__icon" aria-hidden="true"><svg class="ac-icon"><use href="#i-rise"/></svg><svg class="ac-icon"><use href="#i-rise"/></svg></span></button>
+                <p class="gx-check__note gx-facts"><span>30-second eligibility check</span><span>$0 monthly plan fees (where applicable)</span><span>CDIC protection on eligible deposits</span></p>
+              </div>
+            </div>
+            
+            <div class="gx-cstep" data-cstep="2" hidden>
+              <div class="gx-check__fields">
                 <div class="gx-field">
                   <label class="gx-label" for="ck-path">How are you moving to Canada?</label>
                   <div class="gx-select">
@@ -3671,14 +3794,18 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
                   </div>
                   <p class="gx-err" id="ck-path-err" aria-live="polite"></p>
                 </div>
+                <div class="gx-field">
+                  <label class="gx-label" for="ck-email">Email</label>
+                  <input class="gx-input" id="ck-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required data-required="Please enter a valid email." aria-describedby="ck-email-err">
+                  <p class="gx-err" id="ck-email-err" aria-live="polite"></p>
+                </div>
               </div>
-              <div class="gx-check__go">
-                <button class="gx-btn" type="button" data-gx-next><span class="ac-btn__label">Check my eligibility</span><span class="ac-btn__icon" aria-hidden="true"><svg class="ac-icon"><use href="#i-rise"/></svg><svg class="ac-icon"><use href="#i-rise"/></svg></span></button>
-                <p class="gx-check__note gx-facts"><span>30-second eligibility check</span><span>$0 monthly plan fees (where applicable)</span><span>CDIC protection on eligible deposits</span></p>
+              <div class="gx-check__go gx-check__go--row">
+                <button class="gx-back" type="button" data-gx-back aria-label="Back"><svg class="ac-icon" aria-hidden="true"><use href="#i-arrow-left"/></svg></button><button class="gx-btn" type="button" data-gx-next><span class="ac-btn__label">Continue</span><span class="ac-btn__icon" aria-hidden="true"><svg class="ac-icon"><use href="#i-rise"/></svg><svg class="ac-icon"><use href="#i-rise"/></svg></span></button>
               </div>
             </div>
             
-            <div class="gx-cstep" data-cstep="2" hidden>
+            <div class="gx-cstep" data-cstep="3" hidden>
               <div class="gx-step2">
                 <fieldset class="gx-field gx-cq" data-for="study" data-required="Please choose one.">
                   <legend class="gx-q">Study Permit Application Status</legend>
@@ -3725,29 +3852,6 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
                   </div>
                   <p class="gx-err" aria-live="polite"></p>
                 </fieldset>
-              </div>
-              <div class="gx-check__go gx-check__go--row">
-                <button class="gx-back" type="button" data-gx-back aria-label="Back"><svg class="ac-icon" aria-hidden="true"><use href="#i-arrow-left"/></svg></button><button class="gx-btn" type="button" data-gx-next><span class="ac-btn__label">Continue</span><span class="ac-btn__icon" aria-hidden="true"><svg class="ac-icon"><use href="#i-rise"/></svg><svg class="ac-icon"><use href="#i-rise"/></svg></span></button>
-              </div>
-            </div>
-            
-            <div class="gx-cstep" data-cstep="3" hidden>
-              <div class="gx-check__fields gx-check__fields--3">
-                <div class="gx-field">
-                  <label class="gx-label" for="ck-name">Name as on passport</label>
-                  <input class="gx-input" id="ck-name" name="name" type="text" autocomplete="name" placeholder="Your full name" required data-required="Please enter your full name." aria-describedby="ck-name-err">
-                  <p class="gx-err" id="ck-name-err" aria-live="polite"></p>
-                </div>
-                <div class="gx-field">
-                  <label class="gx-label" for="ck-email">Email</label>
-                  <input class="gx-input" id="ck-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required data-required="Please enter a valid email." aria-describedby="ck-email-err">
-                  <p class="gx-err" id="ck-email-err" aria-live="polite"></p>
-                </div>
-                <div class="gx-field">
-                  <label class="gx-label" for="ck-phone">Phone or WhatsApp</label>
-                  <input class="gx-input" id="ck-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91 98765 43210" required data-required="Please enter a phone number." aria-describedby="ck-phone-err">
-                  <p class="gx-err" id="ck-phone-err" aria-live="polite"></p>
-                </div>
               </div>
               <div class="gx-check__go gx-check__go--row">
                 <button class="gx-back" type="button" data-gx-back aria-label="Back"><svg class="ac-icon" aria-hidden="true"><use href="#i-arrow-left"/></svg></button><button class="gx-btn" type="submit" data-busy="Checking"><span class="ac-btn__label">Check my eligibility</span><span class="ac-btn__icon" aria-hidden="true"><svg class="ac-icon"><use href="#i-rise"/></svg><svg class="ac-icon"><use href="#i-rise"/></svg></span></button>
@@ -4141,7 +4245,7 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
       <details><summary>How long do approval and the transfer take?<span class="ac-iconbtn"><svg class="ac-icon ac-icon--plus"><use href="#i-plus"/></svg><svg class="ac-icon ac-icon--minus"><use href="#i-minus"/></svg></span></summary><div class="ac-acc__body">BMO offers processing in minutes for eligible countries and applications; some applications need extra checks and take longer. Transfer times depend on the sending bank.</div></details>
       <details><summary>What if my permit is refused or my move is delayed?<span class="ac-iconbtn"><svg class="ac-icon ac-icon--plus"><use href="#i-plus"/></svg><svg class="ac-icon ac-icon--minus"><use href="#i-minus"/></svg></span></summary><div class="ac-acc__body">Contact BMO. If your move is delayed, BMO will walk you through your options for the account and any money you’ve sent. If you can no longer come to Canada, BMO can explain how to request your funds back and what fees may apply. Students whose study permit is refused can request a refund of their GIC funds and any interest earned, less applicable wire transfer fees.</div></details>
       <details><summary>Can I use the money as soon as I land?<span class="ac-iconbtn"><svg class="ac-icon ac-icon--plus"><use href="#i-plus"/></svg><svg class="ac-icon ac-icon--minus"><use href="#i-minus"/></svg></span></summary><div class="ac-acc__body">Your first visit to a BMO branch is when your account goes live. Try to visit in your first few days, so your account is active before you need the money you’ve sent.</div></details>
-      <details><summary>What does this check ask for?<span class="ac-iconbtn"><svg class="ac-icon ac-icon--plus"><use href="#i-plus"/></svg><svg class="ac-icon ac-icon--minus"><use href="#i-minus"/></svg></span></summary><div class="ac-acc__body">A few questions about your move: where you live now, your pathway, your permit status and when you plan to arrive, then your name, email and phone. It never asks for passwords, PINs or passport uploads.</div></details>
+      <details><summary>What does this check ask for?<span class="ac-iconbtn"><svg class="ac-icon ac-icon--plus"><use href="#i-plus"/></svg><svg class="ac-icon ac-icon--minus"><use href="#i-minus"/></svg></span></summary><div class="ac-acc__body">Your name, phone and where you live now, then a few questions about your move: your pathway, your email, your permit status and when you plan to arrive. It never asks for passwords, PINs or passport uploads.</div></details>
       <details><summary>Does Aether Connect charge anything?<span class="ac-iconbtn"><svg class="ac-icon ac-icon--plus"><use href="#i-plus"/></svg><svg class="ac-icon ac-icon--minus"><use href="#i-minus"/></svg></span></summary><div class="ac-acc__body">This eligibility check is free. Aether Connect is not a bank: BMO provides the account, makes the decision on your application and sets its fees.</div></details>
       <details><summary>Who holds my money, and is it protected?<span class="ac-iconbtn"><svg class="ac-icon ac-icon--plus"><use href="#i-plus"/></svg><svg class="ac-icon ac-icon--minus"><use href="#i-minus"/></svg></span></summary><div class="ac-acc__body">BMO does, in your own BMO account. Funds never pass through Aether Connect. Eligible deposits are protected by CDIC up to CAD 100,000 per depositor, per insured category.</div></details>
     </div>
@@ -4338,6 +4442,112 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
       fBtns.forEach(function (b, i) { b.addEventListener("click", function () { showFig(i); }); });
     }
 
+    /* the arrivals board (client round 3, 23 Nov): the h1's two lines go onto split-flap tiles, the second (the punch)
+       on red tiles. Rows are cut to fit the space (two per line on wide screens, more on phones, as balanced as the
+       words allow); the spare tiles to the right stay blank, as on a real board. On the entrance every letter tile
+       spins through a few letters and lands, left to right, row by row. The strip below flips to the next eligible
+       country every few seconds while it's on screen; the clock is Toronto's own time. Still with reduced motion. */
+    var board = root.querySelector("[data-gx-board]"), boardPlay = function () {};
+    if (board && board.animate) (function () {
+      var rowsBox = board.querySelector("[data-gx-board-rows]"), CH = "ABCDEFGHIJKLMNOPRSTUVWYZ";
+      var lines = $$(".gx-title .gx-l", root).map(function (l) { return l.textContent.trim().replace(/\s+/g, " ").toUpperCase(); });
+      var tiles = [], built = "", played = false, started = false;
+      function tile(em) {
+        var t = document.createElement("span"); t.className = "fl" + (em ? " fl--em" : "");
+        t.innerHTML = "<i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i>"; t._c = " "; t._to = " "; return t;
+      }
+      function set(t, c) { $$("b", t).forEach(function (b) { b.textContent = c; }); t._c = c; }
+      function flip(t, nx, D) {
+        var q = t.children, cur = t._c;
+        q[0].firstChild.textContent = nx; q[1].firstChild.textContent = cur; q[2].firstChild.textContent = cur; q[3].firstChild.textContent = nx; t._c = nx;
+        var a = q[2].animate([{ transform: "rotateX(0deg)", filter: "brightness(1)" }, { transform: "rotateX(-90deg)", filter: "brightness(.5)" }], { duration: D * .5, easing: "cubic-bezier(.5,0,.9,.5)", fill: "forwards" });
+        return a.finished.then(function () {
+          q[2].firstChild.textContent = nx; a.cancel();
+          var b = q[3].animate([{ transform: "rotateX(90deg)", filter: "brightness(.5)" }, { transform: "rotateX(0deg)", filter: "brightness(1)" }], { duration: D * .5, easing: "cubic-bezier(.2,.6,.35,1)", fill: "forwards" });
+          return b.finished.then(function () { q[1].firstChild.textContent = nx; b.cancel(); });
+        });
+      }
+      function spin(t, to, n, last) {
+        var p = Promise.resolve();
+        for (var i = 0; i < n; i++) (function (c) { p = p.then(function () { return flip(t, c, 100); }); })(CH.charAt(Math.floor(Math.random() * CH.length)));
+        return p.then(function () { return flip(t, to, last || 190); });
+      }
+      /* the rows: as few as the width allows, then as even as possible */
+      function cut(text, C) {
+        var w = text.split(" "), n = w.length, best = null;
+        for (var m = 0; m < (1 << (n - 1)); m++) {
+          var rows = [], cur = w[0];
+          for (var i = 1; i < n; i++) { if (m & (1 << (i - 1))) { rows.push(cur); cur = w[i]; } else cur += " " + w[i]; }
+          rows.push(cur);
+          if (rows.some(function (r) { return r.length > C; })) continue;
+          var cost = rows.length * 1e5 + rows.reduce(function (s, r) { return s + (C - r.length) * (C - r.length); }, 0);
+          if (!best || cost < best.cost) best = { rows: rows, cost: cost };
+        }
+        return best ? best.rows : w;
+      }
+      function layout() {
+        var W = rowsBox.clientWidth; if (!W) return;
+        var phone = W < 520, g = phone ? 3 : 5;
+        var want = phone ? 25 : Math.max(24, Math.min(34, window.innerHeight * .05 / 1.4));
+        var longest = Math.max.apply(null, lines.join(" ").split(" ").map(function (x) { return x.length; }));
+        var C = Math.max(longest, Math.floor((W + g) / (want + g)));
+        var rows = [], em = [];
+        lines.forEach(function (l, k) { cut(l, C).forEach(function (r) { rows.push(r); em.push(k > 0); }); });
+        var tw = Math.floor((W - (C - 1) * g) / C * 10) / 10;
+        board.style.setProperty("--g", g + "px"); rowsBox.style.setProperty("--tw", tw + "px"); rowsBox.style.setProperty("--th", Math.round(tw * 1.4) + "px");
+        var key = C + "|" + rows.join("/");
+        if (key === built) return;
+        built = key; rowsBox.textContent = ""; tiles = [];
+        rows.forEach(function (r, y) {
+          var row = document.createElement("div"); row.className = "gx-board__row";
+          for (var x = 0; x < C; x++) {
+            var t = tile(em[y] && x < r.length); t._to = r.charAt(x) || " "; t._d = y * 150 + x * 36;
+            row.appendChild(t); tiles.push(t);
+          }
+          rowsBox.appendChild(row);
+        });
+        if (played || reduce) tiles.forEach(function (t) { set(t, t._to); });
+      }
+      boardPlay = function () {
+        if (played) return; played = true;
+        if (reduce) { tiles.forEach(function (t) { set(t, t._to); }); return; }
+        tiles.forEach(function (t) { if (t._to !== " ") setTimeout(function () { spin(t, t._to, 3 + Math.floor(Math.random() * 5)); }, t._d); });
+      };
+      root.classList.add("has-board");
+      layout();
+      var bt; window.addEventListener("resize", function () { clearTimeout(bt); bt = setTimeout(layout, 120); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+
+      /* the strip: where they're arriving from, and the account that's waiting */
+      var CO = [["INDIA", "in"], ["PAKISTAN", "pk"], ["VIETNAM", "vn"], ["PHILIPPINES", "ph"], ["CHINA", "cn"], ["COLOMBIA", "co"], ["PERU", "pe"],
+        ["MOROCCO", "ma"], ["COSTA RICA", "cr"], ["ST VINCENT", "vc"], ["ANTIGUA", "ag"], ["TRINIDAD", "tt"], ["SENEGAL", "sn"]];
+      var FL = {}; $$("img[data-flag]").forEach(function (im) { FL[im.getAttribute("data-flag")] = im.getAttribute("src"); });
+      var fromBox = board.querySelector("[data-gx-board-from]"), acctBox = board.querySelector("[data-gx-board-acct]"), flag = board.querySelector("[data-gx-board-flag]");
+      var from = [], acct = [], co = 0, onScr = true;
+      for (var i = 0; i < 11; i++) { var ft = tile(false); fromBox.appendChild(ft); from.push(ft); }
+      "OPENED".split("").forEach(function (c) { var at = tile(false); at._to = c; acctBox.appendChild(at); acct.push(at); });
+      function showFrom(k, anim) {
+        var name = CO[k][0];
+        var turnFlag = function () { if (FL[CO[k][1]]) flag.src = FL[CO[k][1]]; if (anim) flag.animate([{ transform: "rotateY(90deg)" }, { transform: "rotateY(0deg)" }], { duration: 420, easing: "cubic-bezier(.2,.6,.35,1)" }); };
+        if (anim) setTimeout(turnFlag, 260); else turnFlag();
+        from.forEach(function (t, j) { var c = name.charAt(j) || " "; if (!anim) set(t, c); else if (t._c !== c) setTimeout(function () { spin(t, c, 1 + Math.floor(Math.random() * 3), 150); }, j * 45); });
+      }
+      if (reduce) { showFrom(0, false); acct.forEach(function (t) { set(t, t._to); }); }
+      var strip = function () {
+        if (started) return; started = true;
+        showFrom(0, !reduce);
+        acct.forEach(function (t, j) { if (reduce) set(t, t._to); else setTimeout(function () { spin(t, t._to, 2 + Math.floor(Math.random() * 3), 150); }, 500 + j * 60); });
+        setInterval(function () { if (!onScr || document.hidden) return; co = (co + 1) % CO.length; showFrom(co, !reduce); }, reduce ? 5000 : 3600);
+      };
+      var bp = boardPlay; boardPlay = function () { bp(); setTimeout(strip, reduce ? 0 : 1500); };
+      if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { onScr = es[0].isIntersecting; }).observe(board);
+
+      /* Toronto's time, to the minute */
+      var clk = board.querySelector("[data-gx-clock]");
+      var clock = function () { try { clk.textContent = new Intl.DateTimeFormat("en-CA", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: "America/Toronto" }).format(new Date()); } catch (e) { clk.parentNode.hidden = true; } };
+      clock(); setInterval(clock, 15000);
+    })();
+
     /* her thoughts: two at a time. The first two arrive one by one; then every 3 s the older one drifts off and the
        next worry takes its place (1 > 3 > 5, 2 > 4 > 6, and round again), so all six come by. Paused while off screen. */
     var ths = $$("[data-gx-thoughts] .gx-th", root), SLOTS = 2, shown = [0, 1], turn = 0, tTimer = 0, onScreen = true;
@@ -4358,7 +4568,8 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
     var think = root.querySelector(".gx-think"), her = root.querySelector(".gx-think__her");
     function trails() {
       if (!think || !her) return;
-      var hw = her.offsetWidth, hh = her.offsetHeight, hx = her.offsetLeft - hw * .5 + hw * .46, hy = her.offsetTop + hh * .19;
+      var flipX = root.classList.contains("has-board");   /* mirrored beside the board: her face sits at 54% of the photo, not 46% */
+      var hw = her.offsetWidth, hh = her.offsetHeight, hx = her.offsetLeft - hw * .5 + hw * (flipX ? .54 : .46), hy = her.offsetTop + hh * .19;
       var phone = window.innerWidth <= 600, k = phone ? .72 : 1;
       ths.forEach(function (t) {
         $$(".gx-trail", t).forEach(function (d) { d.remove(); });
@@ -4394,6 +4605,7 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
       setTimeout(function () { root.classList.add("is-in"); }, reduce ? 0 : 650);
       setTimeout(runFigs, reduce ? 0 : 2100);
       setTimeout(thinking, reduce ? 0 : 1900);
+      setTimeout(function () { boardPlay(); }, reduce ? 0 : 1000);
     };
     var intro = document.querySelector(".gx-intro");
     if (html.classList.contains("gx-intro-on") && intro) {
@@ -4412,11 +4624,12 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
     } else if (html.classList.contains("gx-anim")) {
       requestAnimationFrame(function () { requestAnimationFrame(stage); });
     } else {
-      root.classList.add("is-stage", "is-in"); runFigs(); thinking();
+      root.classList.add("is-stage", "is-in"); runFigs(); thinking(); boardPlay();
     }
   }
 
-  /* ---------- the check, three steps: 1 country + pathway → 2 the pathway's questions + arrival → 3 details.
+  /* ---------- the check, three steps (client, 23 Nov: the lead first): 1 name, phone + country → 2 pathway + email →
+     3 the pathway's questions + arrival.
      Each step is checked before the next one shows; Back keeps the answers. The last step fires "ac:lead" with every
      answer (the CRM hook) and goes on to the thank-you page. The mockup posts nowhere. ---------- */
   var card = document.getElementById("check");
@@ -4479,7 +4692,7 @@ fieldset.gx-field + fieldset.gx-field { margin-top: 16px; }
       if (first && k > 1) first.focus({ preventScroll: true });
     }
     $$("[data-gx-next]", form).forEach(function (b) {
-      b.addEventListener("click", function () { var st = b.closest(".gx-cstep"), k = steps.indexOf(st) + 1; if (valid(st)) { if (k === 1) showQuestions(sel.value); show(k + 1); } });
+      b.addEventListener("click", function () { var st = b.closest(".gx-cstep"), k = steps.indexOf(st) + 1; if (valid(st)) { if (st.contains(sel)) showQuestions(sel.value); show(k + 1); } });
     });
     $$("[data-gx-back]", form).forEach(function (b) { b.addEventListener("click", function () { show(steps.indexOf(b.closest(".gx-cstep"))); }); });
     form.addEventListener("keydown", function (e) {
